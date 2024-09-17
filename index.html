@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSV Taulukko</title>
+    <title>CSV/Excel Taulukko - OECD DAC CRS</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable@12.1.0/dist/handsontable.full.min.css">
     <style>
         body {
@@ -12,58 +12,114 @@
         #csvTable {
             margin-top: 20px;
         }
+        .error {
+            color: red;
+        }
     </style>
 </head>
 <body>
 
-    <h1>CSV Lataaja ja Muokkaaja</h1>
+    <h1>OECD DAC CRS CSV/Excel Lataaja ja Muokkaaja</h1>
 
-    <!-- CSV-tiedoston lataus -->
-    <input type="file" id="fileInput" accept=".csv" />
+    <!-- CSV/Excel-tiedoston lataus -->
+    <input type="file" id="fileInput" accept=".csv, .xls, .xlsx" />
     <button id="downloadCsv">Lataa CSV tiedosto</button>
+
+    <!-- Otsikoiden tarkistus -->
+    <p id="message" class="error"></p>
 
     <!-- Taulukko -->
     <div id="csvTable"></div>
 
-    <!-- PapaParse ja Handsontable kirjastot -->
+    <!-- PapaParse, Handsontable ja SheetJS (xlsx) kirjastot -->
     <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.0/papaparse.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/handsontable@12.1.0/dist/handsontable.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
     <script>
         let hot; // Handsontable-objekti
+        const requiredHeaders = [
+            "Reporting Year", "Donor Code", "Donor Name", "Recipient Code",
+            "Recipient Name", "Purpose Code", "Sector", "Flow", "Amount (USD)"
+        ];
 
-        // CSV-tiedoston lataaminen
+        // CSV/Excel-tiedoston lataaminen
         document.getElementById('fileInput').addEventListener('change', function(event) {
             const file = event.target.files[0];
             if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const csvData = e.target.result;
-
-                    // Muuta CSV-data taulukkomuotoon PapaParse-kirjastolla
-                    Papa.parse(csvData, {
-                        complete: function(results) {
-                            createTable(results.data);
-                        }
-                    });
-                };
-                reader.readAsText(file);
+                const fileName = file.name.toLowerCase();
+                if (fileName.endsWith('.csv')) {
+                    handleCSVFile(file);
+                } else if (fileName.endsWith('.xls') || fileName.endsWith('.xlsx')) {
+                    handleExcelFile(file);
+                } else {
+                    document.getElementById('message').innerHTML = 'Virheellinen tiedostotyyppi. Lataa CSV tai Excel-tiedosto.';
+                }
             }
         });
+
+        // CSV-tiedoston käsittely
+        function handleCSVFile(file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const csvData = e.target.result;
+                Papa.parse(csvData, {
+                    complete: function(results) {
+                        const headers = results.data[0];  // Ensimmäinen rivi = otsikot
+                        if (validateHeaders(headers)) {
+                            createTable(results.data);
+                            document.getElementById('message').innerHTML = '';  // Tyhjennä virheilmoitus
+                        } else {
+                            document.getElementById('message').innerHTML = 'CSV-tiedoston otsikot eivät täsmää OECD DAC CRS -otsikoiden kanssa.';
+                        }
+                    }
+                });
+            };
+            reader.readAsText(file);
+        }
+
+        // Excel-tiedoston käsittely
+        function handleExcelFile(file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, { type: 'array' });
+                const firstSheetName = workbook.SheetNames[0];
+                const worksheet = workbook.Sheets[firstSheetName];
+                const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+                
+                const headers = jsonData[0];  // Ensimmäinen rivi = otsikot
+                if (validateHeaders(headers)) {
+                    createTable(jsonData);
+                    document.getElementById('message').innerHTML = '';  // Tyhjennä virheilmoitus
+                } else {
+                    document.getElementById('message').innerHTML = 'Excel-tiedoston otsikot eivät täsmää OECD DAC CRS -otsikoiden kanssa.';
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        // Tarkista, että CSV/Excel-otsikot vastaavat OECD DAC CRS -otsikoita
+        function validateHeaders(headers) {
+            return JSON.stringify(headers) === JSON.stringify(requiredHeaders);
+        }
 
         // Luo Handsontable-taulukko
         function createTable(data) {
             const container = document.getElementById('csvTable');
             
+            // Poista otsikkorivi datasta ennen taulukon luomista
+            const tableData = data.slice(1);
+
             // Jos taulukko on jo olemassa, päivitä sen data
             if (hot) {
                 hot.destroy();
             }
 
             hot = new Handsontable(container, {
-                data: data,
+                data: tableData,
                 rowHeaders: true,
-                colHeaders: true,
+                colHeaders: requiredHeaders,
                 contextMenu: true,
                 licenseKey: 'non-commercial-and-evaluation'
             });
@@ -73,7 +129,10 @@
         document.getElementById('downloadCsv').addEventListener('click', function() {
             if (hot) {
                 const editedData = hot.getData();
-                const csv = Papa.unparse(editedData);
+
+                // Lisää otsikot takaisin ladattavaan CSV-tiedostoon
+                const dataWithHeaders = [requiredHeaders, ...editedData];
+                const csv = Papa.unparse(dataWithHeaders);
 
                 // Luo linkki tiedoston lataamista varten
                 const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
