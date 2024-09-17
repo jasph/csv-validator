@@ -15,6 +15,18 @@
         .error {
             color: red;
         }
+        #form {
+            margin-top: 20px;
+            display: none;
+        }
+        #form label {
+            display: block;
+            margin-top: 10px;
+        }
+        #form input {
+            width: 100%;
+            padding: 5px;
+        }
     </style>
 </head>
 <body>
@@ -28,8 +40,21 @@
     <!-- Otsikoiden tarkistus -->
     <p id="message" class="error"></p>
 
+    <!-- Uuden rivin lisäämisen nappi -->
+    <button id="addRow">Lisää uusi rivi</button>
+
     <!-- Taulukko -->
     <div id="csvTable"></div>
+
+    <!-- Lomake yksittäisen rivin muokkausta varten -->
+    <div id="form">
+        <h3>Muokkaa riviä</h3>
+        <form id="rowForm">
+            <!-- Lomakekentät luodaan dynaamisesti -->
+        </form>
+        <button id="saveRow">Tallenna muutokset</button>
+        <button id="cancelEdit">Peruuta</button>
+    </div>
 
     <!-- PapaParse, Handsontable ja SheetJS (xlsx) kirjastot -->
     <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.0/papaparse.min.js"></script>
@@ -38,6 +63,7 @@
 
     <script>
         let hot; // Handsontable-objekti
+        let selectedRow = null; // Valittu rivi lomakkeen muokkausta varten
         const requiredHeaders = [
             "Reporting Year", "Donor Code", "Donor Name", "Recipient Code",
             "Recipient Name", "Purpose Code", "Sector", "Flow", "Amount (USD)"
@@ -107,9 +133,9 @@
         // Luo Handsontable-taulukko
         function createTable(data) {
             const container = document.getElementById('csvTable');
-            
-            // Poista otsikkorivi datasta ennen taulukon luomista
-            const tableData = data.slice(1);
+
+            // Lisää napit joka rivin alkuun
+            const tableData = data.slice(1).map(row => ['Muokkaa', ...row]);
 
             // Jos taulukko on jo olemassa, päivitä sen data
             if (hot) {
@@ -119,10 +145,73 @@
             hot = new Handsontable(container, {
                 data: tableData,
                 rowHeaders: true,
-                colHeaders: requiredHeaders,
+                colHeaders: ['Toiminnot', ...requiredHeaders],
                 contextMenu: true,
+                stretchH: 'all',
+                manualColumnResize: true, // Sallii sarakkeen koon muuttamisen
+                columns: [
+                    { renderer: "html" }, // Muokkausnappi
+                    ...requiredHeaders.map(() => ({ width: 150 })) // Rajoitettu sarakkeen leveys (150px)
+                ],
+                afterRenderer: function(instance, td, row, col, prop, value, cellProperties) {
+                    if (col === 0) {
+                        td.innerHTML = `<button onclick="editRow(${row})">Muokkaa</button> <button onclick="deleteRow(${row})">Poista</button>`;
+                    }
+                },
                 licenseKey: 'non-commercial-and-evaluation'
             });
+        }
+
+        // Rivin muokkaus
+        function editRow(row) {
+            selectedRow = row;
+            const rowData = hot.getDataAtRow(row).slice(1); // Hanki rivi ilman muokkausnappia
+            const form = document.getElementById('rowForm');
+            form.innerHTML = ''; // Tyhjennä vanhat kentät
+
+            requiredHeaders.forEach((header, index) => {
+                const label = document.createElement('label');
+                label.textContent = header;
+                const input = document.createElement('input');
+                input.value = rowData[index];
+                input.id = `form_${index}`;
+                form.appendChild(label);
+                form.appendChild(input);
+            });
+
+            document.getElementById('form').style.display = 'block'; // Näytä lomake
+        }
+
+        // Tallenna muokattu rivi
+        document.getElementById('saveRow').addEventListener('click', function() {
+            if (selectedRow !== null) {
+                const updatedRow = [];
+                requiredHeaders.forEach((header, index) => {
+                    const inputValue = document.getElementById(`form_${index}`).value;
+                    updatedRow.push(inputValue);
+                });
+                hot.setDataAtRow(selectedRow, ['Muokkaa', ...updatedRow]); // Päivitä taulukko
+                document.getElementById('form').style.display = 'none'; // Piilota lomake
+            }
+        });
+
+        // Peruuta muokkaus
+        document.getElementById('cancelEdit').addEventListener('click', function() {
+            document.getElementById('form').style.display = 'none'; // Piilota lomake
+        });
+
+        // Uuden rivin lisääminen
+        document.getElementById('addRow').addEventListener('click', function() {
+            const emptyRow = ['Muokkaa', ...requiredHeaders.map(() => '')];
+            hot.alter('insert_row', hot.countRows(), 1); 
+
+            // Lisää uusi tyhjä rivi taulukon loppuun
+            hot.setDataAtRow(hot.countRows() - 1, emptyRow); // Lisää tiedot uuteen riviin
+        });
+
+        // Rivin poistaminen
+        function deleteRow(row) {
+            hot.alter('remove_row', row, 1); // Poista valittu rivi
         }
 
         // CSV-tiedoston lataaminen takaisin
@@ -130,8 +219,11 @@
             if (hot) {
                 const editedData = hot.getData();
 
+                // Poista muokkausnapit ennen CSV:n luomista
+                const dataWithoutButtons = editedData.map(row => row.slice(1));
+
                 // Lisää otsikot takaisin ladattavaan CSV-tiedostoon
-                const dataWithHeaders = [requiredHeaders, ...editedData];
+                const dataWithHeaders = [requiredHeaders, ...dataWithoutButtons];
                 const csv = Papa.unparse(dataWithHeaders);
 
                 // Luo linkki tiedoston lataamista varten
