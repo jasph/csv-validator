@@ -1,1 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSV Taulukko</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable@12.1.0/dist/handsontable.full.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        #csvTable {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
 
+    <h1>CSV Lataaja ja Muokkaaja</h1>
+
+    <!-- CSV-tiedoston lataus -->
+    <input type="file" id="fileInput" accept=".csv" />
+    <button id="downloadCsv">Lataa CSV tiedosto</button>
+
+    <!-- Taulukko -->
+    <div id="csvTable"></div>
+
+    <!-- PapaParse ja Handsontable kirjastot -->
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.0/papaparse.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/handsontable@12.1.0/dist/handsontable.full.min.js"></script>
+
+    <script>
+        let hot; // Handsontable-objekti
+
+        // CSV-tiedoston lataaminen
+        document.getElementById('fileInput').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const csvData = e.target.result;
+
+                    // Muuta CSV-data taulukkomuotoon PapaParse-kirjastolla
+                    Papa.parse(csvData, {
+                        complete: function(results) {
+                            createTable(results.data);
+                        }
+                    });
+                };
+                reader.readAsText(file);
+            }
+        });
+
+        // Luo Handsontable-taulukko
+        function createTable(data) {
+            const container = document.getElementById('csvTable');
+            
+            // Jos taulukko on jo olemassa, päivitä sen data
+            if (hot) {
+                hot.destroy();
+            }
+
+            hot = new Handsontable(container, {
+                data: data,
+                rowHeaders: true,
+                colHeaders: true,
+                contextMenu: true,
+                licenseKey: 'non-commercial-and-evaluation'
+            });
+        }
+
+        // CSV-tiedoston lataaminen takaisin
+        document.getElementById('downloadCsv').addEventListener('click', function() {
+            if (hot) {
+                const editedData = hot.getData();
+                const csv = Papa.unparse(editedData);
+
+                // Luo linkki tiedoston lataamista varten
+                const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = 'muokattu.csv';
+                link.style.display = 'none';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        });
+    </script>
+
+</body>
+</html>
