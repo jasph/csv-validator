@@ -1,0 +1,42 @@
+<kysymykset>
+  <kysymys>
+    <teksti>Mikä on Suomen pääkaupunki?</teksti>
+    <vaihtoehto>Helsinki</vaihtoehto>
+    <vaihtoehto>Turku</vaihtoehto>
+    <vaihtoehto>Tampere</vaihtoehto>
+    <vaihtoehto>Oulu</vaihtoehto>
+    <oikea>Helsinki</oikea>
+  </kysymys>
+  <kysymys>
+    <teksti>Kuinka monta tuntia vuorokaudessa on?</teksti>
+    <vaihtoehto>20</vaihtoehto>
+    <vaihtoehto>22</vaihtoehto>
+    <vaihtoehto>24</vaihtoehto>
+    <vaihtoehto>26</vaihtoehto>
+    <oikea>24</oikea>
+  </kysymys>
+  <kysymys>
+    <teksti>Mikä on maailman pisin joki?</teksti>
+    <vaihtoehto>Niili</vaihtoehto>
+    <vaihtoehto>Amazon</vaihtoehto>
+    <vaihtoehto>Ganges</vaihtoehto>
+    <vaihtoehto>Seine</vaihtoehto>
+    <oikea>Amazon</oikea>
+  </kysymys>
+  <kysymys>
+    <teksti>Kuka kirjoitti "Tuntematon sotilas"?</teksti>
+    <vaihtoehto>Juhani Aho</vaihtoehto>
+    <vaihtoehto>Ilmari Kianto</vaihtoehto>
+    <vaihtoehto>Väinö Linna</vaihtoehto>
+    <vaihtoehto>Eino Leino</vaihtoehto>
+    <oikea>Väinö Linna</oikea>
+  </kysymys>
+  <kysymys>
+    <teksti>Mikä on maapallon suurin manner?</teksti>
+    <vaihtoehto>Afrikka</vaihtoehto>
+    <vaihtoehto>Eurooppa</vaihtoehto>
+    <vaihtoehto>Aasia</vaihtoehto>
+    <vaihtoehto>Etelä-Amerikka</vaihtoehto>
+    <oikea>Aasia</oikea>
+  </kysymys>
+</kysymykset>
