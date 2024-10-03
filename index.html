@@ -56,24 +56,31 @@
     </div>
 
     <script>
-        const csvFile = 'kysymykset.csv'; // CSV-tiedoston nimi
+        const xmlFile = 'kysymykset.xml'; // XML-tiedoston nimi
         let questions = [];
         let currentQuestionIndex = 0;
         let score = 0;
 
-        // Funktio, jolla haetaan CSV-tiedosto ja parsitaan se
+        // Funktio, jolla haetaan XML-tiedosto ja parsitaan se
         async function loadQuestions() {
-            const response = await fetch(csvFile);
-            const data = await response.text();
-            const rows = data.split('\n').slice(1); // Poistetaan otsikkorivi
-            rows.forEach(row => {
-                const columns = row.split(',');
+            const response = await fetch(xmlFile);
+            const xmlData = await response.text();
+            const parser = new DOMParser();
+            const xml = parser.parseFromString(xmlData, 'application/xml');
+            
+            const kysymykset = xml.getElementsByTagName('kysymys');
+            for (let i = 0; i < kysymykset.length; i++) {
+                const kysymys = kysymykset[i];
+                const teksti = kysymys.getElementsByTagName('teksti')[0].textContent;
+                const vaihtoehdot = Array.from(kysymys.getElementsByTagName('vaihtoehto')).map(v => v.textContent);
+                const oikea = kysymys.getElementsByTagName('oikea')[0].textContent;
+
                 questions.push({
-                    question: columns[0],
-                    options: [columns[1], columns[2], columns[3], columns[4]],
-                    correct: columns[5].trim()
+                    question: teksti,
+                    options: vaihtoehdot,
+                    correct: oikea
                 });
-            });
+            }
             startQuiz();
         }
 
