@@ -1,42 +1,166 @@
 <kysymykset>
   <kysymys>
-    <teksti>Mikä on Suomen pääkaupunki?</teksti>
-    <vaihtoehto>Helsinki</vaihtoehto>
-    <vaihtoehto>Turku</vaihtoehto>
-    <vaihtoehto>Tampere</vaihtoehto>
-    <vaihtoehto>Oulu</vaihtoehto>
-    <oikea>Helsinki</oikea>
+    <teksti>Mitä tarkoittaa ODA (Official Development Assistance)?</teksti>
+    <vaihtoehto>Kehitysyhteistyöapua, joka on suunnattu kehitysmaille</vaihtoehto>
+    <vaihtoehto>Vapaaehtoista tukea teollisuusmaille</vaihtoehto>
+    <vaihtoehto>Luontoapua kansainvälisille yrityksille</vaihtoehto>
+    <vaihtoehto>Valtion sisäistä rahoitusta</vaihtoehto>
+    <oikea>Kehitysyhteistyöapua, joka on suunnattu kehitysmaille</oikea>
   </kysymys>
   <kysymys>
-    <teksti>Kuinka monta tuntia vuorokaudessa on?</teksti>
-    <vaihtoehto>20</vaihtoehto>
-    <vaihtoehto>22</vaihtoehto>
-    <vaihtoehto>24</vaihtoehto>
-    <vaihtoehto>26</vaihtoehto>
-    <oikea>24</oikea>
+    <teksti>Mikä on OECD DAC:n pääasiallinen tehtävä?</teksti>
+    <vaihtoehto>Edistää talouskasvua OECD-maissa</vaihtoehto>
+    <vaihtoehto>Antaa suuntaviivoja ja seurata kehitysyhteistyön tehokkuutta</vaihtoehto>
+    <vaihtoehto>Kouluttaa yrityksiä ulkomaan investoinneissa</vaihtoehto>
+    <vaihtoehto>Rahoittaa infrastruktuuriprojekteja</vaihtoehto>
+    <oikea>Antaa suuntaviivoja ja seurata kehitysyhteistyön tehokkuutta</oikea>
   </kysymys>
   <kysymys>
-    <teksti>Mikä on maailman pisin joki?</teksti>
-    <vaihtoehto>Niili</vaihtoehto>
-    <vaihtoehto>Amazon</vaihtoehto>
-    <vaihtoehto>Ganges</vaihtoehto>
-    <vaihtoehto>Seine</vaihtoehto>
-    <oikea>Amazon</oikea>
+    <teksti>Milloin OECD DAC perustettiin?</teksti>
+    <vaihtoehto>1961</vaihtoehto>
+    <vaihtoehto>1972</vaihtoehto>
+    <vaihtoehto>1985</vaihtoehto>
+    <vaihtoehto>1994</vaihtoehto>
+    <oikea>1961</oikea>
   </kysymys>
   <kysymys>
-    <teksti>Kuka kirjoitti "Tuntematon sotilas"?</teksti>
-    <vaihtoehto>Juhani Aho</vaihtoehto>
-    <vaihtoehto>Ilmari Kianto</vaihtoehto>
-    <vaihtoehto>Väinö Linna</vaihtoehto>
-    <vaihtoehto>Eino Leino</vaihtoehto>
-    <oikea>Väinö Linna</oikea>
+    <teksti>Mitä DAC-raportoinnissa seurataan?</teksti>
+    <vaihtoehto>Kehitysmaiden bruttokansantuotetta</vaihtoehto>
+    <vaihtoehto>Virallisen kehitysavun määrää ja kohdentamista</vaihtoehto>
+    <vaihtoehto>Ilmastonmuutoksen vaikutuksia</vaihtoehto>
+    <vaihtoehto>Teollisuusmaiden velkasuhdetta</vaihtoehto>
+    <oikea>Virallisen kehitysavun määrää ja kohdentamista</oikea>
   </kysymys>
   <kysymys>
-    <teksti>Mikä on maapallon suurin manner?</teksti>
-    <vaihtoehto>Afrikka</vaihtoehto>
-    <vaihtoehto>Eurooppa</vaihtoehto>
-    <vaihtoehto>Aasia</vaihtoehto>
-    <vaihtoehto>Etelä-Amerikka</vaihtoehto>
-    <oikea>Aasia</oikea>
+    <teksti>Mikä on DAC:n suosittelema vähimmäisosuus BKT:sta ODA-rahoitukseen?</teksti>
+    <vaihtoehto>0.2%</vaihtoehto>
+    <vaihtoehto>0.5%</vaihtoehto>
+    <vaihtoehto>0.7%</vaihtoehto>
+    <vaihtoehto>1%</vaihtoehto>
+    <oikea>0.7%</oikea>
+  </kysymys>
+  <kysymys>
+    <teksti>Miten ODA-raportointi auttaa kehitysyhteistyötä?</teksti>
+    <vaihtoehto>Kertoo rahoituksen läpinäkyvyydestä ja tehokkuudesta</vaihtoehto>
+    <vaihtoehto>Auttaa yrityksiä hankkimaan kansainvälisiä sopimuksia</vaihtoehto>
+    <vaihtoehto>Luo uusia veromalleja OECD-maille</vaihtoehto>
+    <vaihtoehto>Ei auta lainkaan</vaihtoehto>
+    <oikea>Kertoo rahoituksen läpinäkyvyydestä ja tehokkuudesta</oikea>
+  </kysymys>
+  <kysymys>
+    <teksti>Mitä tarkoittaa "grant element" ODA-raportoinnissa?</teksti>
+    <vaihtoehto>Se on lahjoitusosuus kehitysmaalle annetusta lainasta</vaihtoehto>
+    <vaihtoehto>Lainan korko</vaihtoehto>
+    <vaihtoehto>ODA-varojen takaisinmaksu</vaihtoehto>
+    <vaihtoehto>Lahjoitus, jonka vastaanottaja palauttaa</vaihtoehto>
+    <oikea>Se on lahjoitusosuus kehitysmaalle annetusta lainasta</oikea>
+  </kysymys>
+  <kysymys>
+    <teksti>Mikä seuraavista ei ole ODA-kelpoinen meno?</teksti>
+    <vaihtoehto>Koulutusohjelmien rahoitus kehitysmaissa</vaihtoehto>
+    <vaihtoehto>Kaupalliset investoinnit</vaihtoehto>
+    <vaihtoehto>Terveysjärjestelmien parantaminen</vaihtoehto>
+    <vaihtoehto>Infrastruktuurihankkeet</vaihtoehto>
+    <oikea>Kaupalliset investoinnit</oikea>
+  </kysymys>
+  <kysymys>
+    <teksti>Mitä tarkoittaa "tiedotusten yhteisraportointiohjelma" (CRS)?</teksti>
+    <vaihtoehto>Se on järjestelmä, jolla seurataan ODA-varojen kohdentamista</vaihtoehto>
+    <vaihtoehto>Väline, jolla valtiot raportoivat sotilasmenoistaan</vaihtoehto>
+    <vaihtoehto>Tietojärjestelmä yritysten veroasioille</vaihtoehto>
+    <vaihtoehto>Kansallinen talousraportointi</vaihtoehto>
+    <oikea>Se on järjestelmä, jolla seurataan ODA-varojen kohdentamista</oikea>
+  </kysymys>
+  <kysymys>
+    <teksti>Miten ODA-varoihin liittyvät velkahelpotukset raportoidaan?</teksti>
+    <vaihtoehto>Osana lahjoituksia</vaihtoehto>
+    <vaihtoehto>Osana lainoja</vaihtoehto>
+    <vaihtoehto>Omina yksikköinä</vaihtoehto>
+    <vaihtoehto>Niitä ei raportoida</vaihtoehto>
+    <oikea>Osana lahjoituksia</oikea>
+  </kysymys>
+  <kysymys>
+    <teksti>Mikä seuraavista on ODA-tuki, jota ei lasketa velaksi?</teksti>
+    <vaihtoehto>Avustus</vaihtoehto>
+    <vaihtoehto>Laina</vaihtoehto>
+    <vaihtoehto>Osakesijoitus</vaihtoehto>
+    <vaihtoehto>Kaupallinen investointi</vaihtoehto>
+    <oikea>Avustus</oikea>
+  </kysymys>
+  <kysymys>
+    <teksti>Mitä tarkoittaa "korkeasti myönteinen laina" ODA:ssa?</teksti>
+    <vaihtoehto>Laina, jonka korko on matala ja takaisinmaksuehdot edulliset</vaihtoehto>
+    <vaihtoehto>Laina, joka on myönteinen vain OECD-maille</vaihtoehto>
+    <vaihtoehto>Kaupallinen laina</vaihtoehto>
+    <vaihtoehto>Ei ODA-kelpoinen laina</vaihtoehto>
+    <oikea>Laina, jonka korko on matala ja takaisinmaksuehdot edulliset</oikea>
+  </kysymys>
+  <kysymys>
+    <teksti>Mitä eroa on ODA:lla ja virallisella tuella (OA)?</teksti>
+    <vaihtoehto>ODA on suunnattu kehitysmaille, OA kattaa myös rikkaammat maat</vaihtoehto>
+    <vaihtoehto>OA on ainoa virallinen tuki</vaihtoehto>
+    <vaihtoehto>ODA koskee vain yksityissektoria</vaihtoehto>
+    <vaihtoehto>Ei eroa</vaihtoehto>
+    <oikea>ODA on suunnattu kehitysmaille, OA kattaa myös rikkaammat maat</oikea>
+  </kysymys>
+  <kysymys>
+    <teksti>Mitä kriteerejä käytetään kehitysmaan määrittämisessä ODA:ssa?</teksti>
+    <vaihtoehto>Väkiluku</vaihtoehto>
+    <vaihtoehto>Kansantulo (GNI) per capita</vaihtoehto
+<kysymys>
+    <teksti>Mitä kriteerejä käytetään kehitysmaan määrittämisessä ODA:ssa?</teksti>
+    <vaihtoehto>Väkiluku</vaihtoehto>
+    <vaihtoehto>Kansantulo (GNI) per capita</vaihtoehto>
+    <vaihtoehto>Maan pinta-ala</vaihtoehto>
+    <vaihtoehto>Teollisuusaste</vaihtoehto>
+    <oikea>Kansantulo (GNI) per capita</oikea>
+  </kysymys>
+  <kysymys>
+    <teksti>Mikä seuraavista on osa DAC:n raportointiohjeistusta?</teksti>
+    <vaihtoehto>Menojen selkeä ja läpinäkyvä erittely</vaihtoehto>
+    <vaihtoehto>Liiketoimintaraportointi</vaihtoehto>
+    <vaihtoehto>Sotilasmenojen raportointi</vaihtoehto>
+    <vaihtoehto>Osakesijoitusten hallinta</vaihtoehto>
+    <oikea>Menojen selkeä ja läpinäkyvä erittely</oikea>
+  </kysymys>
+  <kysymys>
+    <teksti>Milloin DAC päivitti viimeksi ODA-raportoinnin suuntaviivoja?</teksti>
+    <vaihtoehto>2014</vaihtoehto>
+    <vaihtoehto>2018</vaihtoehto>
+    <vaihtoehto>2020</vaihtoehto>
+    <vaihtoehto>2022</vaihtoehto>
+    <oikea>2018</oikea>
+  </kysymys>
+  <kysymys>
+    <teksti>Mikä on OECD DAC:n rooli YK:n kestävän kehityksen tavoitteiden (SDG) edistämisessä?</teksti>
+    <vaihtoehto>Seuraa ja arvioi SDG-tavoitteiden edistymistä ODA-rahoituksen avulla</vaihtoehto>
+    <vaihtoehto>Laatii uudet kestävän kehityksen tavoitteet</vaihtoehto>
+    <vaihtoehto>Tukee vain YK:n alaisia kehityshankkeita</vaihtoehto>
+    <vaihtoehto>Rahoittaa SDG-projektit kokonaan</vaihtoehto>
+    <oikea>Seuraa ja arvioi SDG-tavoitteiden edistymistä ODA-rahoituksen avulla</oikea>
+  </kysymys>
+  <kysymys>
+    <teksti>Mikä on "concessional in character" DAC:n ODA-raportoinnissa?</teksti>
+    <vaihtoehto>Rahoitus, jonka ehdot ovat edullisia vastaanottajalle</vaihtoehto>
+    <vaihtoehto>Rahoitus, joka kohdistuu vain teollisuusmaille</vaihtoehto>
+    <vaihtoehto>Laina ilman takaisinmaksuvelvoitetta</vaihtoehto>
+    <vaihtoehto>Kaupallisesti kannattava laina</vaihtoehto>
+    <oikea>Rahoitus, jonka ehdot ovat edullisia vastaanottajalle</oikea>
+  </kysymys>
+  <kysymys>
+    <teksti>Kuinka ODA-tuki voi auttaa ilmastonmuutoksen torjunnassa?</teksti>
+    <vaihtoehto>Rahoittamalla fossiilisten polttoaineiden käyttöä</vaihtoehto>
+    <vaihtoehto>Rahoittamalla vihreää infrastruktuuria ja kestäviä projekteja</vaihtoehto>
+    <vaihtoehto>Tukemalla ainoastaan kaivosprojekteja</vaihtoehto>
+    <vaihtoehto>Ei voi auttaa ilmastonmuutoksessa</vaihtoehto>
+    <oikea>Rahoittamalla vihreää infrastruktuuria ja kestäviä projekteja</oikea>
+  </kysymys>
+  <kysymys>
+    <teksti>Mikä on DAC:n luokittelu "least developed countries" (LDC)?</teksti>
+    <vaihtoehto>Maat, joiden BKT on korkein</vaihtoehto>
+    <vaihtoehto>Taloudellisesti ja sosiaalisesti haavoittuvimmat maat</vaihtoehto>
+    <vaihtoehto>Maat, joissa on suurin määrä luonnonvaroja</vaihtoehto>
+    <vaihtoehto>Maat, jotka ovat rikkaita öljyvarannoiltaan</vaihtoehto>
+    <oikea>Taloudellisesti ja sosiaalisesti haavoittuvimmat maat</oikea>
   </kysymys>
 </kysymykset>
