@@ -1,243 +1,134 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSV/Excel Taulukko - OECD DAC CRS</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable@12.1.0/dist/handsontable.full.min.css">
+    <title>Monivalinta Quiz</title>
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
         }
-        #csvTable {
+        .quiz-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            text-align: center;
+        }
+        .question {
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+        .answers {
+            display: flex;
+            flex-direction: column;
+        }
+        .answers button {
+            margin: 5px 0;
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .answers button:hover {
+            background-color: #0056b3;
+        }
+        #result {
             margin-top: 20px;
-        }
-        .error {
-            color: red;
-        }
-        #form {
-            margin-top: 20px;
-            display: none;
-        }
-        #form label {
-            display: block;
-            margin-top: 10px;
-        }
-        #form input {
-            width: 100%;
-            padding: 5px;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
-
-    <h1>OECD DAC CRS CSV/Excel Lataaja ja Muokkaaja</h1>
-
-    <!-- CSV/Excel-tiedoston lataus -->
-    <input type="file" id="fileInput" accept=".csv, .xls, .xlsx" />
-    <button id="downloadCsv">Lataa CSV tiedosto</button>
-
-    <!-- Otsikoiden tarkistus -->
-    <p id="message" class="error"></p>
-
-    <!-- Uuden rivin lisäämisen nappi -->
-    <button id="addRow">Lisää uusi rivi</button>
-
-    <!-- Taulukko -->
-    <div id="csvTable"></div>
-
-    <!-- Lomake yksittäisen rivin muokkausta varten -->
-    <div id="form">
-        <h3>Muokkaa riviä</h3>
-        <form id="rowForm">
-            <!-- Lomakekentät luodaan dynaamisesti -->
-        </form>
-        <button id="saveRow">Tallenna muutokset</button>
-        <button id="cancelEdit">Peruuta</button>
+    <div class="quiz-container">
+        <div id="question" class="question"></div>
+        <div class="answers" id="answers"></div>
+        <div id="result"></div>
     </div>
 
-    <!-- PapaParse, Handsontable ja SheetJS (xlsx) kirjastot -->
-    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.0/papaparse.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/handsontable@12.1.0/dist/handsontable.full.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-
     <script>
-        let hot; // Handsontable-objekti
-        let selectedRow = null; // Valittu rivi lomakkeen muokkausta varten
-        const requiredHeaders = [
-            "Reporting Year", "Donor Code", "Donor Name", "Recipient Code",
-            "Recipient Name", "Purpose Code", "Sector", "Flow", "Amount (USD)"
-        ];
+        const csvFile = 'kysymykset.csv'; // CSV-tiedoston nimi
+        let questions = [];
+        let currentQuestionIndex = 0;
+        let score = 0;
 
-        // CSV/Excel-tiedoston lataaminen
-        document.getElementById('fileInput').addEventListener('change', function(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const fileName = file.name.toLowerCase();
-                if (fileName.endsWith('.csv')) {
-                    handleCSVFile(file);
-                } else if (fileName.endsWith('.xls') || fileName.endsWith('.xlsx')) {
-                    handleExcelFile(file);
-                } else {
-                    document.getElementById('message').innerHTML = 'Virheellinen tiedostotyyppi. Lataa CSV tai Excel-tiedosto.';
-                }
-            }
-        });
-
-        // CSV-tiedoston käsittely
-        function handleCSVFile(file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const csvData = e.target.result;
-                Papa.parse(csvData, {
-                    complete: function(results) {
-                        const headers = results.data[0];  // Ensimmäinen rivi = otsikot
-                        if (validateHeaders(headers)) {
-                            createTable(results.data);
-                            document.getElementById('message').innerHTML = '';  // Tyhjennä virheilmoitus
-                        } else {
-                            document.getElementById('message').innerHTML = 'CSV-tiedoston otsikot eivät täsmää OECD DAC CRS -otsikoiden kanssa.';
-                        }
-                    }
+        // Funktio, jolla haetaan CSV-tiedosto ja parsitaan se
+        async function loadQuestions() {
+            const response = await fetch(csvFile);
+            const data = await response.text();
+            const rows = data.split('\n').slice(1); // Poistetaan otsikkorivi
+            rows.forEach(row => {
+                const columns = row.split(',');
+                questions.push({
+                    question: columns[0],
+                    options: [columns[1], columns[2], columns[3], columns[4]],
+                    correct: columns[5].trim()
                 });
-            };
-            reader.readAsText(file);
+            });
+            startQuiz();
         }
 
-        // Excel-tiedoston käsittely
-        function handleExcelFile(file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const data = new Uint8Array(e.target.result);
-                const workbook = XLSX.read(data, { type: 'array' });
-                const firstSheetName = workbook.SheetNames[0];
-                const worksheet = workbook.Sheets[firstSheetName];
-                const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-                
-                const headers = jsonData[0];  // Ensimmäinen rivi = otsikot
-                if (validateHeaders(headers)) {
-                    createTable(jsonData);
-                    document.getElementById('message').innerHTML = '';  // Tyhjennä virheilmoitus
-                } else {
-                    document.getElementById('message').innerHTML = 'Excel-tiedoston otsikot eivät täsmää OECD DAC CRS -otsikoiden kanssa.';
-                }
-            };
-            reader.readAsArrayBuffer(file);
-        }
-
-        // Tarkista, että CSV/Excel-otsikot vastaavat OECD DAC CRS -otsikoita
-        function validateHeaders(headers) {
-            return JSON.stringify(headers) === JSON.stringify(requiredHeaders);
-        }
-
-        // Luo Handsontable-taulukko
-        function createTable(data) {
-            const container = document.getElementById('csvTable');
-
-            // Lisää napit joka rivin alkuun
-            const tableData = data.slice(1).map(row => ['Muokkaa', ...row]);
-
-            // Jos taulukko on jo olemassa, päivitä sen data
-            if (hot) {
-                hot.destroy();
+        // Satunnaisten kysymysten valinta
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
             }
+        }
 
-            hot = new Handsontable(container, {
-                data: tableData,
-                rowHeaders: true,
-                colHeaders: ['Toiminnot', ...requiredHeaders],
-                contextMenu: true,
-                stretchH: 'all',
-                manualColumnResize: true, // Sallii sarakkeen koon muuttamisen
-                columns: [
-                    { renderer: "html" }, // Muokkausnappi
-                    ...requiredHeaders.map(() => ({ width: 150 })) // Rajoitettu sarakkeen leveys (150px)
-                ],
-                afterRenderer: function(instance, td, row, col, prop, value, cellProperties) {
-                    if (col === 0) {
-                        td.innerHTML = `<button onclick="editRow(${row})">Muokkaa</button> <button onclick="deleteRow(${row})">Poista</button>`;
-                    }
-                },
-                licenseKey: 'non-commercial-and-evaluation'
+        function startQuiz() {
+            shuffle(questions); // Satunnaistetaan kysymykset
+            showQuestion();
+        }
+
+        // Näytetään nykyinen kysymys
+        function showQuestion() {
+            const questionObj = questions[currentQuestionIndex];
+            const questionElement = document.getElementById('question');
+            const answersElement = document.getElementById('answers');
+            
+            questionElement.innerText = questionObj.question;
+            answersElement.innerHTML = '';
+
+            // Luodaan vastauspainikkeet
+            questionObj.options.forEach(option => {
+                const button = document.createElement('button');
+                button.innerText = option;
+                button.onclick = () => checkAnswer(option, questionObj.correct);
+                answersElement.appendChild(button);
             });
         }
 
-        // Rivin muokkaus
-        function editRow(row) {
-            selectedRow = row;
-            const rowData = hot.getDataAtRow(row).slice(1); // Hanki rivi ilman muokkausnappia
-            const form = document.getElementById('rowForm');
-            form.innerHTML = ''; // Tyhjennä vanhat kentät
-
-            requiredHeaders.forEach((header, index) => {
-                const label = document.createElement('label');
-                label.textContent = header;
-                const input = document.createElement('input');
-                input.value = rowData[index];
-                input.id = `form_${index}`;
-                form.appendChild(label);
-                form.appendChild(input);
-            });
-
-            document.getElementById('form').style.display = 'block'; // Näytä lomake
+        // Tarkistetaan vastaus
+        function checkAnswer(selected, correct) {
+            if (selected === correct) {
+                score++;
+            }
+            currentQuestionIndex++;
+            if (currentQuestionIndex < 5) {
+                showQuestion();
+            } else {
+                showResult();
+            }
         }
 
-        // Tallenna muokattu rivi
-        document.getElementById('saveRow').addEventListener('click', function() {
-            if (selectedRow !== null) {
-                const updatedRow = [];
-                requiredHeaders.forEach((header, index) => {
-                    const inputValue = document.getElementById(`form_${index}`).value;
-                    updatedRow.push(inputValue);
-                });
-                hot.setDataAtRow(selectedRow, ['Muokkaa', ...updatedRow]); // Päivitä taulukko
-                document.getElementById('form').style.display = 'none'; // Piilota lomake
-            }
-        });
-
-        // Peruuta muokkaus
-        document.getElementById('cancelEdit').addEventListener('click', function() {
-            document.getElementById('form').style.display = 'none'; // Piilota lomake
-        });
-
-        // Uuden rivin lisääminen
-        document.getElementById('addRow').addEventListener('click', function() {
-            const emptyRow = ['Muokkaa', ...requiredHeaders.map(() => '')];
-            hot.alter('insert_row', hot.countRows(), 1); 
-
-            // Lisää uusi tyhjä rivi taulukon loppuun
-            hot.setDataAtRow(hot.countRows() - 1, emptyRow); // Lisää tiedot uuteen riviin
-        });
-
-        // Rivin poistaminen
-        function deleteRow(row) {
-            hot.alter('remove_row', row, 1); // Poista valittu rivi
+        // Näytetään lopputulos
+        function showResult() {
+            document.getElementById('question').innerText = `Sait ${score} / 5 oikein!`;
+            document.getElementById('answers').innerHTML = '';
         }
 
-        // CSV-tiedoston lataaminen takaisin
-        document.getElementById('downloadCsv').addEventListener('click', function() {
-            if (hot) {
-                const editedData = hot.getData();
-
-                // Poista muokkausnapit ennen CSV:n luomista
-                const dataWithoutButtons = editedData.map(row => row.slice(1));
-
-                // Lisää otsikot takaisin ladattavaan CSV-tiedostoon
-                const dataWithHeaders = [requiredHeaders, ...dataWithoutButtons];
-                const csv = Papa.unparse(dataWithHeaders);
-
-                // Luo linkki tiedoston lataamista varten
-                const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-                const link = document.createElement('a');
-                link.href = URL.createObjectURL(blob);
-                link.download = 'muokattu.csv';
-                link.style.display = 'none';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            }
-        });
+        // Ladataan kysymykset, kun sivu latautuu
+        window.onload = loadQuestions;
     </script>
-
 </body>
 </html>
