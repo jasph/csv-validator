@@ -3,17 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plane on Map</title>
+    <title>Plane on Map with Year Filter</title>
     <link rel="stylesheet" href="style.css">
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 </head>
 <body>
 
-    <h3>Select a DAC Country and Control the Plane:</h3>
-    <select id="countryFilter" onchange="filterCountries()">
+    <h3>Select a Year to Display DAC Data</h3>
+    <select id="yearSelector" onchange="updateMapByYear()">
         <option value="all">All</option>
     </select>
+
+    <button id="playButton" onclick="playYearCycle()">Play</button>
 
     <div id="map"></div>
 
