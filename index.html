@@ -1,25 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Map Visualization with Filter</title>
-    <link rel="stylesheet" href="style.css">
-    <!-- Leaflet CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-</head>
-<body>
-    <h3>Select a Country:</h3>
-    <select id="countryFilter" onchange="filterCountries()">
-        <option value="all">All</option>
-    </select>
+// Initialize the Leaflet map
+var map = L.map('map').setView([20, 0], 2); // Centered at the equator
 
-    <div id="map"></div>
+// Add a tile layer from OpenStreetMap
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+}).addTo(map);
 
-    <!-- Leaflet JS -->
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <!-- D3.js -->
-    <script src="https://d3js.org/d3.v6.min.js"></script>
-    <script src="script.js"></script>
-</body>
-</html>
+// Function to add bubbles (circles) to the map
+function addBubble(lat, lng, size, name) {
+    L.circle([lat, lng], {
+        color: 'blue',
+        fillColor: '#30f',
+        fillOpacity: 0.5,
+        radius: size * 1000  // Adjust scale for display
+    }).addTo(map).bindPopup(name);
+}
+
+// Load XML data
+d3.xml('data.xml').then(function(data) {
+    // Parse the XML file
+    const locations = data.querySelectorAll('location');
+
+    locations.forEach(function(location) {
+        const name = location.querySelector('name').textContent;
+        const lat = +location.querySelector('lat').textContent;
+        const lng = +location.querySelector('lng').textContent;
+        const size = +location.querySelector('size').textContent;
+
+        // Add bubble to the map
+        addBubble(lat, lng, size, name);
+    });
+}).catch(function(error) {
+    console.log('Error loading XML data:', error);
+});
