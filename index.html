@@ -3,18 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DAC Countries Map</title>
+    <title>Plane on Map</title>
     <link rel="stylesheet" href="style.css">
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 </head>
 <body>
-    <h3>Select a DAC Country:</h3>
+
+    <h3>Select a DAC Country and Control the Plane:</h3>
     <select id="countryFilter" onchange="filterCountries()">
         <option value="all">All</option>
     </select>
 
     <div id="map"></div>
+
+    <div class="controls">
+        <button onclick="turnLeft()">Turn Left</button>
+        <button onclick="moveForward()">Move Forward</button>
+        <button onclick="turnRight()">Turn Right</button>
+    </div>
 
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
