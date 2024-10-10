@@ -1,11 +1,14 @@
 body {
-    background-color: #000; /* Set the background to black */
+    background-color: #000; /* Black background */
     color: white;
     font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 0;
 }
 
 #map {
-    height: 90vh;  /* Full screen height minus some space for the dropdown */
+    height: 90vh;  /* Full-screen height */
     width: 100%;
 }
 
@@ -19,4 +22,27 @@ select {
     margin: 10px auto;
     padding: 10px;
     font-size: 16px;
+}
+
+#plane {
+    width: 40px;
+    height: 40px;
+    background: url('plane-icon.png') no-repeat center;
+    background-size: cover;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(0deg);
+    z-index: 1000; /* Make sure it stays on top of the map */
+}
+
+.controls {
+    margin-top: 20px;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    margin: 10px;
+    cursor: pointer;
 }
