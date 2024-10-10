@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<data>
+    <location>
+        <name>New York</name>
+        <lat>40.7128</lat>
+        <lng>-74.0060</lng>
+        <size>30</size>
+    </location>
+    <location>
+        <name>London</name>
+        <lat>51.5074</lat>
+        <lng>-0.1278</lng>
+        <size>50</size>
+    </location>
+    <location>
+        <name>Tokyo</name>
+        <lat>35.6895</lat>
+        <lng>139.6917</lng>
+        <size>40</size>
+    </location>
+    <location>
+        <name>Paris</name>
+        <lat>48.8566</lat>
+        <lng>2.3522</lng>
+        <size>25</size>
+    </location>
+</data>
