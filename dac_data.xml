@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<data>
+    <location>
+        <name>Australia</name>
+        <lat>-25.2744</lat>
+        <lng>133.7751</lng>
+        <size>50</size> <!-- Abstract size for visualization -->
+    </location>
+    <location>
+        <name>Canada</name>
+        <lat>56.1304</lat>
+        <lng>-106.3468</lng>
+        <size>40</size>
+    </location>
+    <location>
+        <name>France</name>
+        <lat>46.6034</lat>
+        <lng>1.8883</lng>
+        <size>30</size>
+    </location>
+    <location>
+        <name>Germany</name>
+        <lat>51.1657</lat>
+        <lng>10.4515</lng>
+        <size>60</size>
+    </location>
+    <location>
+        <name>Japan</name>
+        <lat>36.2048</lat>
+        <lng>138.2529</lng>
+        <size>70</size>
+    </location>
+    <location>
+        <name>United Kingdom</name>
+        <lat>55.3781</lat>
+        <lng>-3.4360</lng>
+        <size>80</size>
+    </location>
+    <location>
+        <name>United States</name>
+        <lat>37.0902</lat>
+        <lng>-95.7129</lng>
+        <size>90</size>
+    </location>
+</data>
