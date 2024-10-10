@@ -3,12 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Map Visualization</title>
+    <title>DAC Countries Map</title>
     <link rel="stylesheet" href="style.css">
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 </head>
 <body>
+    <h3>Select a DAC Country:</h3>
+    <select id="countryFilter" onchange="filterCountries()">
+        <option value="all">All</option>
+    </select>
+
     <div id="map"></div>
 
     <!-- Leaflet JS -->
