@@ -1,141 +1,25 @@
 <!DOCTYPE html>
-<html lang="fi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Monivalinta Quiz</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .quiz-container {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 400px;
-            text-align: center;
-        }
-        .question {
-            font-size: 18px;
-            margin-bottom: 15px;
-        }
-        .answers {
-            display: flex;
-            flex-direction: column;
-        }
-        .answers button {
-            margin: 5px 0;
-            padding: 10px;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .answers button:hover {
-            background-color: #0056b3;
-        }
-        #result {
-            margin-top: 20px;
-            font-weight: bold;
-        }
-    </style>
+    <title>Map Visualization with Filter</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 </head>
 <body>
-    <div class="quiz-container">
-        <div id="question" class="question"></div>
-        <div class="answers" id="answers"></div>
-        <div id="result"></div>
-    </div>
+    <h3>Select a Country:</h3>
+    <select id="countryFilter" onchange="filterCountries()">
+        <option value="all">All</option>
+    </select>
 
-    <script>
-        const xmlFile = 'kysymykset.xml'; // XML-tiedoston nimi
-        let questions = [];
-        let currentQuestionIndex = 0;
-        let score = 0;
+    <div id="map"></div>
 
-        // Funktio, jolla haetaan XML-tiedosto ja parsitaan se
-        async function loadQuestions() {
-            const response = await fetch(xmlFile);
-            const xmlData = await response.text();
-            const parser = new DOMParser();
-            const xml = parser.parseFromString(xmlData, 'application/xml');
-            
-            const kysymykset = xml.getElementsByTagName('kysymys');
-            for (let i = 0; i < kysymykset.length; i++) {
-                const kysymys = kysymykset[i];
-                const teksti = kysymys.getElementsByTagName('teksti')[0].textContent;
-                const vaihtoehdot = Array.from(kysymys.getElementsByTagName('vaihtoehto')).map(v => v.textContent);
-                const oikea = kysymys.getElementsByTagName('oikea')[0].textContent;
-
-                questions.push({
-                    question: teksti,
-                    options: vaihtoehdot,
-                    correct: oikea
-                });
-            }
-            startQuiz();
-        }
-
-        // Satunnaisten kysymysten valinta
-        function shuffle(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-        }
-
-        function startQuiz() {
-            shuffle(questions); // Satunnaistetaan kysymykset
-            showQuestion();
-        }
-
-        // Näytetään nykyinen kysymys
-        function showQuestion() {
-            const questionObj = questions[currentQuestionIndex];
-            const questionElement = document.getElementById('question');
-            const answersElement = document.getElementById('answers');
-            
-            questionElement.innerText = questionObj.question;
-            answersElement.innerHTML = '';
-
-            // Luodaan vastauspainikkeet
-            questionObj.options.forEach(option => {
-                const button = document.createElement('button');
-                button.innerText = option;
-                button.onclick = () => checkAnswer(option, questionObj.correct);
-                answersElement.appendChild(button);
-            });
-        }
-
-        // Tarkistetaan vastaus
-        function checkAnswer(selected, correct) {
-            if (selected === correct) {
-                score++;
-            }
-            currentQuestionIndex++;
-            if (currentQuestionIndex < 5) {
-                showQuestion();
-            } else {
-                showResult();
-            }
-        }
-
-        // Näytetään lopputulos
-        function showResult() {
-            document.getElementById('question').innerText = `Sait ${score} / 5 oikein!`;
-            document.getElementById('answers').innerHTML = '';
-        }
-
-        // Ladataan kysymykset, kun sivu latautuu
-        window.onload = loadQuestions;
-    </script>
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <!-- D3.js -->
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
