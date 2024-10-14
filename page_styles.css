@@ -1,0 +1,61 @@
+/* Yleinen tyyli */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f8fb; /* Vaalea pastellinsävyinen tausta */
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+/* Header */
+header {
+    background-color: #1e3a5f; /* Tummansininen header */
+    padding: 15px 0;
+}
+
+header nav ul {
+    list-style-type: none;
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+}
+
+header nav ul li {
+    margin: 0 15px;
+}
+
+header nav ul li a {
+    color: #ffffff; /* Valkoiset linkit */
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+header nav ul li a:hover {
+    color: #b0d6ff; /* Hover-efekti: vaaleampi sininen */
+}
+
+/* Main content */
+main {
+    padding: 20px;
+}
+
+section {
+    margin-bottom: 40px;
+}
+
+h1 {
+    color: #1e3a5f; /* Sama sininen kuin headerissa */
+}
+
+/* Reaktiivinen tyyli */
+@media (max-width: 768px) {
+    header nav ul {
+        flex-direction: column;
+    }
+
+    header nav ul li {
+        margin: 10px 0;
+    }
+}
